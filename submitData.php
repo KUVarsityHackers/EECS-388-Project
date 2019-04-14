@@ -2,8 +2,8 @@
 //ini_set('display_errors', 1);
 //error_reporting(E_ALL);
 
-//$date = $_POST['date'];
-//$distance = $_POST['distance'];
+$date = $_POST['date'];
+$distance = $_POST['distance'];
 
 $date = "5/13/1999";
 $distance = 5;

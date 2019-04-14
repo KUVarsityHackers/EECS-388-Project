@@ -1,6 +1,6 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+//ini_set('display_errors', 1);
+//error_reporting(E_ALL);
 
 //$date = $_POST['date'];
 //$distance = $_POST['distance'];
@@ -26,14 +26,14 @@ if ($date)
 
 
 
-$query = "SELECT distance FROM Trash_Tech ORDER BY id DESC LIMIT 1;"
+$query = "SELECT distance FROM Trash_Tech ORDER BY id DESC LIMIT 1;";
 
 $sql = mysqli_query($mysqli, $query);
 $result = $sql->fetch_assoc();
 $takenDistance = $result['distance'];
 
 
-echo "hello: $takenDistance";
+echo "$takenDistance";
 
 
 

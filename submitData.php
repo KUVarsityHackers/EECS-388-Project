@@ -2,11 +2,22 @@
 //ini_set('display_errors', 1);
 //error_reporting(E_ALL);
 
-$date = $_POST['date'];
-$distance = $_POST['distance'];
 
-$date = "5/13/1999";
-$distance = 5;
+$distance = $_GET['distance'];
+
+// set default timezone
+date_default_timezone_set('America/Chicago'); // CDT
+
+$info = getdate();
+$date = $info['mday'];
+$month = $info['mon'];
+$year = $info['year'];
+$hour = $info['hours'];
+$min = $info['minutes'];
+$sec = $info['seconds'];
+
+$current_date = "$date/$month/$year - $hour:$min:$sec";
+
 
 $mysqli = new mysqli("mysql.eecs.ku.edu", "m326s072", "xah7Aedi", "m326s072");
 
@@ -17,26 +28,23 @@ if ($mysqli->connect_errno)
 }
 
 
-$insert = "INSERT INTO Trash_Tech (time, distance) VALUES('$date', '$distance');";
+$insert = "INSERT INTO Trash_Tech (time, distance) VALUES('$current_date', '$distance');";
 
-if ($date)
+if (!empty($distance))
 {
   $mysqli->query($insert);
 }
 
-
-
-$query = "SELECT distance FROM Trash_Tech ORDER BY id DESC LIMIT 1;";
+$query = "SELECT distance, time FROM Trash_Tech ORDER BY id DESC LIMIT 1;";
 
 $sql = mysqli_query($mysqli, $query);
 $result = $sql->fetch_assoc();
 $takenDistance = $result['distance'];
+$takenDate = $result['time'];
 
 
-echo "$takenDistance";
-
-
-
+echo "Distance: $takenDistance <br>";
+echo "Date: $takenDate";
 
 
 $mysqli->close();

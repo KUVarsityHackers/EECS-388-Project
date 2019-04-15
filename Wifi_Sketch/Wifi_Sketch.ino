@@ -1,41 +1,21 @@
-/*
-  Web client
-
- This sketch connects to a website (http://www.google.com)
- using the WiFi module.
-
- This example is written for a network using WPA encryption. For
- WEP or WPA, change the Wifi.begin() call accordingly.
-
- This example is written for a network using WPA encryption. For
- WEP or WPA, change the Wifi.begin() call accordingly.
-
- Circuit:
- * Board with NINA module (Arduino MKR WiFi 1010, MKR VIDOR 4000 and UNO WiFi Rev.2)
-
- created 13 July 2010
- by dlf (Metodo2 srl)
- modified 31 May 2012
- by Tom Igoe
- */
-
+#define trigPin 0
+#define echoPin 1
 
 #include <SPI.h>
 #include <WiFiNINA.h>
 
-char ssid[] = "iPhone";        // your network SSID (name)
-char pass[] = "s8pjzq922p43u";    // your network password (use for WPA, or use as key for WEP)
-int keyIndex = 0;            // your network key Index number (needed only for WEP)
+char ssid[] = "Grant's iPhone";
+char pass[] = "password";
 
 int status = WL_IDLE_STATUS;
-// if you don't want to use DNS (and reduce your sketch size)
-// use the numeric IP instead of the name for the server:
-//IPAddress server(74,125,232,128);  // numeric IP for Google (no DNS)
-char server[] = "people.eecs.ku.edu";    // name address for Google (using DNS)
+char server[] = "people.eecs.ku.edu";
 
 WiFiSSLClient client;
 
 void setup() {
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  
   //Initialize serial and wait for port to open:
   Serial.begin(9600);
   while (!Serial) {
@@ -58,7 +38,6 @@ void setup() {
   while (status != WL_CONNECTED) {
     Serial.print("Attempting to connect to SSID: ");
     Serial.println(ssid);
-    // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
     status = WiFi.begin(ssid, pass);
 
     // wait 10 seconds for connection:
@@ -67,38 +46,39 @@ void setup() {
   Serial.println("Connected to wifi");
   printWifiStatus();
 
+}
+
+void loop() {
   Serial.println("\nStarting connection to server...");
-  // if you get a connection, report back via serial:
   if (client.connect(server, 443)) {
+
     Serial.println("connected to server");
     // Make a HTTP request:
-    String URL = "GET /~m326s072/EECS-388-Project/submitData.php?";
-    String Distance = "100";
+    String URL = "GET /~m326s072/EECS-388-Project/submitData.php?distance=";
+    String Distance = String(getDistance());
+    Serial.println(URL + Distance);
     client.println(URL + Distance);
     client.print("Host: ");
     client.println(server);
     client.println("Connection: close");
     client.println();
   }
-}
 
-void loop() {
   // if there are incoming bytes available
   // from the server, read them and print them:
   while (client.available()) {
-    char c = client.read();
-    Serial.write(c);
+  char c = client.read();
+  Serial.write(c);
   }
-
+  
   // if the server's disconnected, stop the client:
   if (!client.connected()) {
     Serial.println();
     Serial.println("disconnecting from server.");
     client.stop();
-
-    // do nothing forevermore:
-    while (true);
   }
+  // Wait 30 seconds before reading again
+  delay(30000);
 }
 
 
@@ -117,4 +97,16 @@ void printWifiStatus() {
   Serial.print("signal strength (RSSI):");
   Serial.print(rssi);
   Serial.println(" dBm");
+}
+
+int getDistance(){
+  long duration, distance;
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  duration = pulseIn(echoPin, HIGH);
+  distance = (duration/2) / 29.1;
+  return distance;
 }

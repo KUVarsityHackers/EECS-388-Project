@@ -100,13 +100,40 @@ void printWifiStatus() {
 }
 
 int getDistance(){
-  long duration, distance;
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(2);
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
-  duration = pulseIn(echoPin, HIGH);
-  distance = (duration/2) / 29.1;
+  int* distances = new int[11];
+  for (int i = 0; i < 11; i++){
+    long duration, distance;
+    digitalWrite(trigPin, LOW);
+    delayMicroseconds(2);
+    digitalWrite(trigPin, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(trigPin, LOW);
+    duration = pulseIn(echoPin, HIGH);
+    distance = (duration/2) / 29.1;
+    Serial.println(distance);
+    distances[i] = distance;
+    delay(100);
+  }
+  bubbleSort(distances, 11);
+  long distance = distances[5];
+  delete[] distances;
   return distance;
 }
+
+void bubbleSort(int arr[], int n) 
+{ 
+   int i, j; 
+   for (i = 0; i < n-1; i++)       
+
+     // Last i elements are already in place    
+     for (j = 0; j < n-i-1; j++)  
+         if (arr[j] > arr[j+1]) 
+            swap(&arr[j], &arr[j+1]); 
+} 
+
+void swap(int *xp, int *yp) 
+{ 
+    int temp = *xp; 
+    *xp = *yp; 
+    *yp = temp; 
+} 

@@ -16,11 +16,8 @@ void setup() {
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
   
-  //Initialize serial and wait for port to open:
+  //Initialize serial interface
   Serial.begin(9600);
-  while (!Serial) {
-    ; // wait for serial port to connect. Needed for native USB port only
-  }
 
   // check for the WiFi module:
   if (WiFi.status() == WL_NO_MODULE) {

@@ -43,6 +43,21 @@ void setup() {
   Serial.println("Connected to wifi");
   printWifiStatus();
 
+  // Setup Code for distance
+  delay(30000); // Wait 30 seconds to ensure mounting is complete
+  Serial.println("Starting initial distance calibration");
+  if (client.connect(server, 443)) {
+    Serial.println("Connecting to server");
+    String URL = "GET /~m326s072/EECS-388-Project/submitData.php?setup=";
+    String Distance = String(getDistance());
+    Serial.println(URL + Distance);
+    client.println(URL + Distance);
+    client.print("Host: ");
+    client.println(server);
+    client.println("Connection: close");
+    client.println();
+  }
+
 }
 
 void loop() {

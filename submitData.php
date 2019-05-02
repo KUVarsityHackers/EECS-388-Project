@@ -55,7 +55,7 @@ $takenDate = $result['time'];
 $sqlInitial = mysqli_query($mysqli, $getSize);
 $resultInitial = $sqlInitial->fetch_assoc();
 $initVal = $resultInitial['initial'];
-$percentage = $takenDistance / $initVal*100;
+$percentage = ($initVal - $takenDistance )/ $initVal * 100;
 echo "<div style=\"margin: 0 auto; width: 50%;text-align: center\">";
 echo "<head> <h1> Trash Tech - Home </h1> </head>";
 echo "<body style=\"background-color: lightseagreen \">";

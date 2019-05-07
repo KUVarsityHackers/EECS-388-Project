@@ -65,6 +65,7 @@ if($percentage>=90)
   echo "<script> alert(\"Time to empty the trash!\")</script> <br>";
 }
 
+$percentage = round($percentage, 2);
 echo "Percentage Full: $percentage% <br>";
 echo "Date: $takenDate";
 

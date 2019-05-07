@@ -45,11 +45,14 @@ $percentage = ($initVal - $takenDistance )/ $initVal * 100;
 echo "<div style=\"margin: 0 auto; width: 50%;text-align: center\">";
 echo "<head> <h1> Trash Tech - Home </h1> </head>";
 echo "<body style=\"background-color: lightseagreen \">";
+
 if($percentage>=90)
 {
   echo "<script> alert(\"Time to empty the trash!\")</script> <br>";
 }
-echo "Percentage Full: $percentage% <br>";
+
+$rounded = round($percentage, 2);
+echo "Percentage Full: $rounded% <br>";
 echo "Date: $takenDate";
 echo "</body>";
 $mysqli->close();

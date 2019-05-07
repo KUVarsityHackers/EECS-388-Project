@@ -65,9 +65,10 @@ if($percentage>=90)
   echo "<script> alert(\"Time to empty the trash!\")</script> <br>";
 }
 
-$percentage = number_format((float)$percentage, 2, '.', '');
 
-echo "Percentage Full: $percentage% <br>";
+$hello = number_format((float)$percentage, 2, '.', '');
+
+echo "Percentage Full: $hello% <br>";
 echo "Date: $takenDate";
 
 echo "</body>";
